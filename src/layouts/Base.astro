@@ -1,0 +1,28 @@
+---
+import { VERSION, noindex, SITE_NAME } from '../config';
+interface Props { title: string; description?: string }
+const { title, description = '' } = Astro.props;
+---
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    {description && <meta name="description" content={description} />}
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+    <link rel="canonical" href={new URL(Astro.url.pathname, 'https://theclusteragency.com').href} />
+    <slot name="head" />
+    <style>
+      :root { color-scheme: light; }
+      body { margin: 0; font-family: system-ui, sans-serif; background: #fff; color: #111; }
+      main { max-width: 60rem; margin: 0 auto; padding: 2rem 1rem; }
+      footer { padding: 2rem 1rem; text-align: center; font-size: .8rem; color: #666; }
+      @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+    </style>
+  </head>
+  <body>
+    <slot />
+    <footer>{SITE_NAME} · web nueva · v{VERSION}</footer>
+  </body>
+</html>

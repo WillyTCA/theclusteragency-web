@@ -1,0 +1,7 @@
+# URL de pruebas: contraseña + noindex. Quitar este bloque el día de salida.
+# Crear la clave en el servidor: htpasswd -c ~/.htpasswds/web-nueva Cluster
+AuthType Basic
+AuthName "Web nueva - The Cluster Agency"
+AuthUserFile /RUTA/ABSOLUTA/.htpasswds/web-nueva
+Require valid-user
+Header set X-Robots-Tag "noindex, nofollow"

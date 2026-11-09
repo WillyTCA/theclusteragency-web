@@ -1,0 +1,21 @@
+---
+import Base from '../layouts/Base.astro';
+import Faq from '../components/Faq.astro';
+// Textos tomados de la home actual (theclusteragency.com), sin cambiar. Pendiente: migrar el resto.
+const faq = [
+  {
+    q: '¿Entonces, son una agencia MarTech?',
+    a: 'Bingo. Somos una agencia MarTech, porque combinamos marketing, datos y tecnología para optimizar la adquisición, la experiencia del cliente y la conversión.',
+  },
+];
+---
+<Base
+  title="The Cluster Agency // agencia marketing digital // CDMX"
+  description="Agencia de marketing digital y desarrollo web en CDMX, gran experiencia en crecimiento de marcas mediante estrategias de contenido en redes sociales y campañas"
+>
+  <main>
+    <h1>The Cluster Agency</h1>
+    <p>Esqueleto de la web nueva. Contenido de la home pendiente de migrar.</p>
+    <Faq items={faq} />
+  </main>
+</Base>

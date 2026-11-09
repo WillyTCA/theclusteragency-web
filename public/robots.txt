@@ -1,0 +1,3 @@
+# URL de pruebas: nada se indexa. El día de salida se sustituye por el robots.txt de producción.
+User-agent: *
+Disallow: /
