@@ -1,0 +1,5 @@
+# Fotos del blog: nunca se ejecuta código aquí.
+<FilesMatch "\.(php|phtml|phar|pl|py|cgi|sh)$">
+  Require all denied
+</FilesMatch>
+Options -ExecCGI -Indexes

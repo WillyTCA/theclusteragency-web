@@ -1,0 +1,10 @@
+---
+// Plantilla del blog. El backend PHP (public/blog/*.php) la lee ya compilada
+// (dist/plantilla-blog/index.html) y sustituye los marcadores @@...@@ por cada artículo.
+// Así el blog dinámico usa SIEMPRE la misma cabecera, estilos y pie que el resto de la web.
+import Base from '../layouts/Base.astro';
+---
+<Base title="@@TITLE@@" description="@@DESC@@" canonical="@@CANON@@">
+  <Fragment slot="head"><Fragment set:html="@@HEAD@@" /></Fragment>
+  <main class="blog"><Fragment set:html="@@CONTENT@@" /></main>
+</Base>

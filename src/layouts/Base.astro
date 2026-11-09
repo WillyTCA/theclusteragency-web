@@ -1,7 +1,7 @@
 ---
 import { VERSION, noindex, SITE_NAME } from '../config';
-interface Props { title: string; description?: string }
-const { title, description = '' } = Astro.props;
+interface Props { title: string; description?: string; canonical?: string }
+const { title, description = '', canonical = new URL(Astro.url.pathname, Astro.site).href } = Astro.props;
 ---
 <!doctype html>
 <html lang="es">
@@ -11,7 +11,7 @@ const { title, description = '' } = Astro.props;
     <title>{title}</title>
     {description && <meta name="description" content={description} />}
     {noindex && <meta name="robots" content="noindex, nofollow" />}
-    <link rel="canonical" href={new URL(Astro.url.pathname, 'https://theclusteragency.com').href} />
+    <link rel="canonical" href={canonical} />
     <slot name="head" />
     <style>
       :root { color-scheme: light; }

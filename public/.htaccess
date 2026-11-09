@@ -1,7 +1,23 @@
-# URL de pruebas: contraseña + noindex. Quitar este bloque el día de salida.
-# Crear la clave en el servidor: htpasswd -c ~/.htpasswds/web-nueva Cluster
-AuthType Basic
-AuthName "Web nueva - The Cluster Agency"
-AuthUserFile /RUTA/ABSOLUTA/.htpasswds/web-nueva
-Require valid-user
-Header set X-Robots-Tag "noindex, nofollow"
+# Web nueva en https://theclusteragency.com/nueva/ — carpeta aparte: WordPress no se toca.
+# Estas reglas SOLO valen dentro de /nueva/.
+Options -Indexes
+DirectoryIndex index.html index.php
+<IfModule mod_headers.c>
+  Header set X-Robots-Tag "noindex, nofollow"
+</IfModule>
+
+# Artículos del blog: /nueva/<categoria>/<slug>/  ->  blog/ver.php (ver.php valida categoría y slug)
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /nueva/
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule ^([a-z0-9-]+)/([a-z0-9-]+)/?$ blog/ver.php?c=$1&s=$2 [L,QSA]
+</IfModule>
+
+# Contraseña de la URL de pruebas (opcional; descomentar tras crear el archivo con
+# htpasswd -c ~/.htpasswds/web-nueva Cluster  y poner la ruta absoluta):
+# AuthType Basic
+# AuthName "Web nueva - The Cluster Agency"
+# AuthUserFile /RUTA/ABSOLUTA/.htpasswds/web-nueva
+# Require valid-user

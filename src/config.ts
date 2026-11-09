@@ -1,5 +1,5 @@
 // Versión visible en el pie. Formato AAAA-MM-DD.N — súbela en cada cambio.
-export const VERSION = '2026-11-09.1';
+export const VERSION = '2026-11-09.2';
 
 // Mientras sea URL de pruebas. false SOLO el día de salida a producción.
 export const noindex = true;

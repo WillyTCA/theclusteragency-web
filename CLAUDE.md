@@ -8,10 +8,17 @@ Léelo entero antes de tocar nada.
 
 La web nueva de theclusteragency.com. Hoy el dominio es **WordPress** (tema Kenozoik,
 WPBakery, AIOSEO) y **sigue siéndolo hasta el día de salida**. Esta web se construye en una
-URL de pruebas (`nueva.theclusteragency.com`) con `noindex` y contraseña.
+carpeta aparte del hosting, **`https://theclusteragency.com/nueva/`** (sin subdominio), con `noindex`. WordPress ignora esa carpeta
+porque existe físicamente; el `.htaccess` de `/nueva/` solo vale dentro de `/nueva/`.
 
 Stack: **Astro 5** (estático, sin servidor), blog en Markdown (`src/content/blog/`),
 GSAP + Lenis para los efectos. Se sube por SFTP (hosting PHP, sin Node).
+
+**Blog con panel propio (PHP, sin build):** `/nueva/admin/` (login 3 intentos / 15 min, CSRF, HTML limpiado, fotos validadas).
+Los artículos viven FUERA de la web, en `~/web-data/articulos/*.json`, y se pintan con la plantilla compilada por Astro
+(`src/pages/plantilla-blog.astro` → `plantilla-blog/index.html`, marcadores `@@TITLE@@ @@DESC@@ @@CANON@@ @@HEAD@@ @@CONTENT@@`).
+Si cambias esos marcadores, cambia también `public/admin/_lib.php` (`web_plantilla`). Publicar un artículo NO requiere deploy.
+Usuarios: `./deploy.sh usuario NOMBRE`. Las fotos van a `nueva/uploads/` y `deploy.sh` nunca las toca ni las borra.
 
 ## Reglas que no se saltan
 
@@ -21,7 +28,7 @@ es el día de salida y lo decide Willy.
 
 **2. No perder SEO.** `docs/urls-*.txt` es el inventario de URLs actuales (blog, páginas,
 clientes, categorías). Cada URL actual o se conserva idéntica o tiene redirección 301 en
-`public/.htaccess` (plantilla de producción en `docs/htaccess-produccion.md`). El sitemap, los
+`.htaccess` (plantilla de producción en `docs/htaccess-produccion.md`). El sitemap, los
 títulos y las descripciones se llevan tal cual.
 
 **3. Mide, no supongas.** Si dices "probado", aclara cómo (build local, navegador
@@ -37,15 +44,16 @@ tiene que probar Willy.
 **6. Sube la versión en cada cambio.** `VERSION` en `src/config.ts`, formato `AAAA-MM-DD.N`.
 Se muestra en el pie de la web. Sin esto nadie sabe si el servidor tiene lo último.
 
-**7. No desplegar sin que Willy lo diga.** `./deploy.sh` sube a un temporal, verifica el hash,
-guarda lo anterior fuera de la web y `./deploy.sh volver` lo deshace.
+**7. No desplegar sin que Willy lo diga.** `./deploy.sh` (SFTP, mismo método que la suite) sube cada archivo a un temporal,
+verifica el SHA-256, guarda lo anterior en `~/deploy-prev-web/` fuera de la web y `./deploy.sh volver` lo deshace.
+No sube `admin/config.php`, no borra `uploads/` ni `~/web-data/`. Variables: ver cabecera del script.
 
 **8. Accesibilidad y rendimiento.** Respetar `prefers-reduced-motion`; menú y FAQ con teclado;
 el sonido del menú nunca suena solo (solo tras clic, con botón de silencio, apagado en
 móvil); vídeos comprimidos y con carga diferida. Inspirarse en otras webs, nunca copiar su
 código, tipografías ni vídeos.
 
-**9. Secretos fuera de git.** Claves, contraseñas y `.env` no se suben.
+**9. Secretos fuera de git.** Claves, contraseñas y `.env` no se suben. Las contraseñas del panel se piden por teclado y se guardan con hash.
 
 ## Banderas de funciones (`src/config.ts`)
 
@@ -61,6 +69,8 @@ npm run build    # genera dist/
 ```
 
 Antes de entregar: `npm run build` sin errores y revisión en navegador.
+El backend se prueba en local con `php -S` (login, bloqueo, guardado, sanitizado, subida, página pública); eso NO prueba
+el Apache real del hosting (`.htaccess`, límites de subida de PHP): hay que comprobarlo con `./deploy.sh comprobar`.
 
 ## Estado
 

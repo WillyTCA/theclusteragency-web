@@ -1,0 +1,4 @@
+# Solo se abren index.php y api.php. La librería y la config nunca por web.
+<FilesMatch "^(_lib\.php|config(\.ejemplo)?\.php)$">
+  Require all denied
+</FilesMatch>
